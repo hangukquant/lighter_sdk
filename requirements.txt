@@ -1,0 +1,4 @@
+orjson
+httpx
+python-dotenv
+git+https://github.com/elliottech/lighter-python.git

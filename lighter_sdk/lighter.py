@@ -1,8 +1,12 @@
 import time
 import asyncio 
+import logging
 
+from datetime import datetime
 from lighter import SignerClient
 from lighter_sdk.httpx import HTTPClient
+
+logging.basicConfig(level=logging.INFO)
 
 BASE_URL = "https://mainnet.zklighter.elliot.ai"
 CHAIN_ID_MAINNET = 304
@@ -217,7 +221,6 @@ class Lighter():
         ticker_min_quote = {}
 
         for ticker in orderbooks:
-            pprint(ticker)
             ticker_to_idx[ticker['symbol']] = int(ticker['market_id'])
             ticker_to_price_precision[ticker['symbol']] = int(ticker['supported_price_decimals'])
             ticker_to_lot_precision[ticker['symbol']] = int(ticker['supported_size_decimals'])
@@ -233,6 +236,7 @@ class Lighter():
 
     async def cleanup(self):
         await self.http_client.cleanup()
+        await self.client.close()
 
     async def limit_order(
         self,
@@ -278,7 +282,7 @@ class Lighter():
         **kwargs
     ):
         market_id = self.ticker_to_idx[ticker] if not is_index else ticker
-        lob = await self.orderbook_orders(market_id)
+        lob = await self.orderbook_orders(market_id,is_index=True)
         bids = lob['bids']
         asks = lob['asks']
         bb = float(bids[0]['price'])
