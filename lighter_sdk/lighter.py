@@ -65,6 +65,8 @@ endpoints = {
         "endpoint": "/api/v1/accountOrders",
         "method": "GET",
     },
+    "limit_order":{}, #see implementation
+    "cancel_order":{}, #see implementation
 
     'exchange_stats':{
         "endpoint": "/api/v1/exchangeStats",
@@ -298,6 +300,13 @@ class Lighter():
             reduce_only=reduce_only,
             is_index=is_index,
             **kwargs
+        )
+
+    async def cancel_order(self,ticker,order_id,is_index=False):
+        market_id = self.ticker_to_idx[ticker] if not is_index else ticker
+        return await self.client.cancel_order(
+            market_index=market_id,
+            order_index=int(order_id)
         )
         
     async def status(self):

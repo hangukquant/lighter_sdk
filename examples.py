@@ -15,21 +15,29 @@ async def main():
     await lighter.init_client()
 
     '''actually submits orders'''
-    # res = await lighter.limit_order(
-    #     ticker='XRP',
-    #     amount=-20,
-    #     price=2.20,
-    # )
-    # res = await lighter.market_order(
-    #     ticker='HYPE',
-    #     amount=1,
-    # )
-    res = await lighter.account_active_orders(
-        ticker='HYPE',
+    res = await lighter.limit_order(
+        ticker='XRP',
+        amount=-20,
+        price=2.50,
     )
+    res = await lighter.market_order(
+        ticker='HYPE',
+        amount=1,
+    )
+    res = await lighter.account_active_orders(
+        ticker='XRP',
+    )
+    
+    cancel_order = res['orders'][0]['order_id']
+    res = await lighter.cancel_order(
+        ticker='XRP',
+        order_id=cancel_order,
+    )
+
     res = await lighter.account_orders(
         ticker=24,is_index=True
     )
+    
     res = await lighter.orderbook_details(
         ticker='ETH'
     )
