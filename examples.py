@@ -27,7 +27,6 @@ async def main():
     res = await lighter.account_active_orders(
         ticker='XRP',
     )
-    
     cancel_order = res['orders'][0]['order_id']
     res = await lighter.cancel_order(
         ticker='XRP',

@@ -54,6 +54,13 @@ async def main():
         ticker='HYPE',
         amount=1,
     )
+    cancel_order = res['orders'][0]['order_id']
+    res = await lighter.cancel_order(
+        ticker='XRP',
+        order_id=cancel_order,
+    )
+
+
 
     res = await lighter.account_active_orders(
         ticker='HYPE',
